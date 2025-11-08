@@ -8,5 +8,6 @@ RUN apt-get update -y && apt-get upgrade -y \
 RUN curl -fsSL https://deno.land/install.sh | sh \
     && ln -s /root/.deno/bin/deno /usr/local/bin/deno
 
+COPY requirements.txt .
 RUN pip3 install -U pip && pip3 install -U -r requirements.txt
 CMD ["bash", "start"]
