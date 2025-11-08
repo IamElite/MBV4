@@ -9,5 +9,6 @@ WORKDIR /app/
 
 RUN pip3 install -r requirements.txt --force-reinstall
 
-CMD ["bash", "start"]
+ENV PYTHONPATH=/app
 
+CMD ["bash", "start"]
