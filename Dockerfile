@@ -1,19 +1,13 @@
-FROM python:latest
-
-WORKDIR /app
-
-COPY requirements.txt .
-
+FROM ubuntu:jammy
 RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends ffmpeg curl unzip \
-    && apt-get clean \
+    && apt-get install -y git libxrender1 python3-pip \
+    && apt-get install -y ffmpeg && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+    
+COPY . /app/
+WORKDIR /app/
 
-RUN curl -fsSL https://deno.land/install.sh | sh \
-    && ln -s /root/.deno/bin/deno /usr/local/bin/deno
-
-RUN pip3 install -U pip && pip3 install -U -r requirements.txt --break-system-packages
-
-COPY . .
+RUN pip3 install -r requirements.txt --force-reinstall
 
 CMD ["bash", "start"]
+
