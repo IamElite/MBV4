@@ -6,12 +6,12 @@
     "env": {
         "API_ID": {
             "description": "Get this value from https://my.telegram.org",
-            "value": "",
+            "value": "24168862",
             "required": true
         },
         "API_HASH": {
             "description": "Get this value from https://my.telegram.org",
-            "value": "",
+            "value": "916a9424dd1e58ab7955001ccc0172b3",
             "required": true
         },
         "BOT_TOKEN": {
@@ -26,18 +26,28 @@
         },
         "LOGGER_ID": {
             "description": "Your log group ID, add your bot there and promote as an admin.",
-            "value": "",
+            "value": "-1002168886769",
             "required": true
         },
         "OWNER_ID": {
             "description": "The user id of user whom you would like to add as OWNER.",
-            "value": "",
+            "value": "1679112664",
             "required": true
         },
         "SESSION": {
             "description": "A Pyrogram v2 String Session from @StringFatherBot on Telegram.",
             "value": "",
             "required": true
+        },
+        "UPSTREAM_REPO": {
+            "description": "Upstream repository URL for updates",
+            "value": "https://github.com/IamElite/MBV4",
+            "required": false
+        },
+        "UPSTREAM_BRANCH": {
+            "description": "Upstream repository branch for updates",
+            "value": "main",
+            "required": false
         }
     },
     "buildpacks": [
@@ -51,5 +61,11 @@
             "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
         }
       ],
-      "stack": "container"
+      "stack": "container",
+    "formation": {
+        "worker": {
+            "quantity": "1",
+            "size": "Standard-2X"
+        }
+    }
 }
