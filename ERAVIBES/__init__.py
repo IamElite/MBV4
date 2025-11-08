@@ -1,10 +1,12 @@
 
 import time
 import logging
+import sys
+import os
 from logging.handlers import RotatingFileHandler
 
 logging.basicConfig(
-    format="[%(asctime)s - %(levelname)s] - %(name)s: %(message)s",
+    format="[%(asctime)s - %(levelname)s] - %(name)s",
     datefmt="%d-%b-%y %H:%M:%S",
     handlers=[
         RotatingFileHandler("log.txt", maxBytes=10485760, backupCount=5),
@@ -21,6 +23,12 @@ logger = logging.getLogger(__name__)
 
 
 __version__ = "3.0.1"
+
+# Add parent directory to sys.path for config import
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
 
 from config import Config
 
