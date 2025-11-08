@@ -1,13 +1,29 @@
-FROM python:latest
+# Use Python 3.11 slim base image
+FROM python:3.11-slim
 
-RUN apt-get update -y && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends ffmpeg curl unzip \
-    && apt-get clean \
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    git \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://deno.land/install.sh | sh \
-    && ln -s /root/.deno/bin/deno /usr/local/bin/deno
-
+# Copy requirements first for better caching
 COPY requirements.txt .
-RUN pip3 install -U pip && pip3 install -U -r requirements.txt
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire project
+COPY . .
+
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash app \
+    && chown -R app:app /app
+USER app
+
+# Run the bot
 CMD ["bash", "start"]
