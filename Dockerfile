@@ -1,29 +1,13 @@
-# Use Python 3.11 slim base image
-FROM python:3.11-slim
+FROM nikolaik/python-nodejs:python3.10-nodejs19
 
-# Set working directory
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    git \
-    curl \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg aria2 \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
-COPY requirements.txt .
+COPY . /app/
+WORKDIR /app/
+RUN python -m pip install --no-cache-dir --upgrade pip
+RUN pip3 install --no-cache-dir --upgrade --requirement requirements.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the entire project
-COPY . .
-
-# Create non-root user for security
-RUN useradd --create-home --shell /bin/bash app \
-    && chown -R app:app /app
-USER app
-
-# Run the bot
-CMD ["bash", "start"]
+CMD python3 -m ERAVIBES
